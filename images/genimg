@@ -1,0 +1,15 @@
+#!/usr/bin/ruby
+
+(1..26).each {
+  | x |
+  begin
+    Kernel.system("convert -font helvetica -fill black -pointsize 92 -draw 'text #{(if x>=10 then 20 else 30 end)},86 \"#{x}\"' blank.png #{x}.png")
+    puts "<file>images/#{x}.png</file>"
+  end
+}
+(1..26).each {
+  | x |
+  begin
+    Kernel.system("convert -flop #{x}.png #{x}.png")
+  end
+}
