@@ -264,11 +264,19 @@ void MainWindow::resetView() {
  */
 void MainWindow::winGame() {
   
-  if (qmf)
-    qmf->startNewGame(difficultySizes[difficulty],
-		      difficultySizes[difficulty],
-		      difficultySizes[difficulty],
-		      difficultyBombs[difficulty]);
+  if (qmf) {
+    if (QMessageBox::information(this, tr("Minesweeper 3D"),
+				 tr("You've actually won!  Play again?"),
+				 QMessageBox::Yes | QMessageBox::Default,
+				 QMessageBox::No) == QMessageBox::Yes) {
+      qmf->startNewGame(difficultySizes[difficulty],
+			difficultySizes[difficulty],
+			difficultySizes[difficulty],
+			difficultyBombs[difficulty]);
+    } else {
+      exit(0);
+    }
+  }
 }
 
 /*!

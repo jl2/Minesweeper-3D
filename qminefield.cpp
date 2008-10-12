@@ -146,10 +146,10 @@ void QMinefield::initLights() {
   light_position[0][2]=30.0;
   light_position[0][3]=1.0;
   
-  light_position[1][4]=0.0;
-  light_position[1][5]=0.0;
-  light_position[1][6]=-30.0;
-  light_position[1][7]=1.0;
+  light_position[1][0]=0.0;
+  light_position[1][1]=0.0;
+  light_position[1][2]=-30.0;
+  light_position[1][3]=1.0;
   
   for (size_t i=0;i<NUM_LIGHTS; ++i) {
     light_color[i][0]=1.0;
@@ -502,45 +502,45 @@ void QMinefield::drawNumberBoxList(size_t tn) {
   glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, mat_shininess[LINE_MAT]);
   glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient[LINE_MAT]);
     
-  glVertex3f( 0.125f, 0.125f,-0.125f);      // Top Right Of The Quad (Top)
-  glVertex3f(-0.125f, 0.125f,-0.125f);      // Top Left Of The Quad (Top)
-  glVertex3f(-0.125f, 0.125f, 0.125f);      // Bottom Left Of The Quad (Top)
-  glVertex3f( 0.125f, 0.125f, 0.125f);      // Bottom Right Of The Quad (Top)
+  glVertex3f( 0.1f, 0.1f,-0.1f);      // Top Right Of The Quad (Top)
+  glVertex3f(-0.1f, 0.1f,-0.1f);      // Top Left Of The Quad (Top)
+  glVertex3f(-0.1f, 0.1f, 0.1f);      // Bottom Left Of The Quad (Top)
+  glVertex3f( 0.1f, 0.1f, 0.1f);      // Bottom Right Of The Quad (Top)
   glEnd();
       
   glBegin(GL_LINE_LOOP);
-  glVertex3f( 0.125f,-0.125f, 0.125f);      // Top Right Of The Quad (Bottom)
-  glVertex3f(-0.125f,-0.125f, 0.125f);      // Top Left Of The Quad (Bottom)
-  glVertex3f(-0.125f,-0.125f,-0.125f);      // Bottom Left Of The Quad (Bottom)
-  glVertex3f( 0.125f,-0.125f,-0.125f);      // Bottom Right Of The Quad (Bottom)
+  glVertex3f( 0.1f,-0.1f, 0.1f);      // Top Right Of The Quad (Bottom)
+  glVertex3f(-0.1f,-0.1f, 0.1f);      // Top Left Of The Quad (Bottom)
+  glVertex3f(-0.1f,-0.1f,-0.1f);      // Bottom Left Of The Quad (Bottom)
+  glVertex3f( 0.1f,-0.1f,-0.1f);      // Bottom Right Of The Quad (Bottom)
   glEnd();
       
   glBegin(GL_LINE_LOOP);
-  glVertex3f( 0.125f, 0.125f, 0.125f);      // Top Right Of The Quad (Front)
-  glVertex3f(-0.125f, 0.125f, 0.125f);      // Top Left Of The Quad (Front)
-  glVertex3f(-0.125f,-0.125f, 0.125f);      // Bottom Left Of The Quad (Front)
-  glVertex3f( 0.125f,-0.125f, 0.125f);      // Bottom Right Of The Quad (Front)
+  glVertex3f( 0.1f, 0.1f, 0.1f);      // Top Right Of The Quad (Front)
+  glVertex3f(-0.1f, 0.1f, 0.1f);      // Top Left Of The Quad (Front)
+  glVertex3f(-0.1f,-0.1f, 0.1f);      // Bottom Left Of The Quad (Front)
+  glVertex3f( 0.1f,-0.1f, 0.1f);      // Bottom Right Of The Quad (Front)
   glEnd();
       
   glBegin(GL_LINE_LOOP);
-  glVertex3f( 0.125f,-0.125f,-0.125f);      // Top Right Of The Quad (Back)
-  glVertex3f(-0.125f,-0.125f,-0.125f);      // Top Left Of The Quad (Back)
-  glVertex3f(-0.125f, 0.125f,-0.125f);      // Bottom Left Of The Quad (Back)
-  glVertex3f( 0.125f, 0.125f,-0.125f);      // Bottom Right Of The Quad (Back)
+  glVertex3f( 0.1f,-0.1f,-0.1f);      // Top Right Of The Quad (Back)
+  glVertex3f(-0.1f,-0.1f,-0.1f);      // Top Left Of The Quad (Back)
+  glVertex3f(-0.1f, 0.1f,-0.1f);      // Bottom Left Of The Quad (Back)
+  glVertex3f( 0.1f, 0.1f,-0.1f);      // Bottom Right Of The Quad (Back)
   glEnd();
       
   glBegin(GL_LINE_LOOP);
-  glVertex3f(-0.125f, 0.125f, 0.125f);      // Top Right Of The Quad (Left)
-  glVertex3f(-0.125f, 0.125f,-0.125f);      // Top Left Of The Quad (Left)
-  glVertex3f(-0.125f,-0.125f,-0.125f);      // Bottom Left Of The Quad (Left)
-  glVertex3f(-0.125f,-0.125f, 0.125f);      // Bottom Right Of The Quad (Left)
+  glVertex3f(-0.1f, 0.1f, 0.1f);      // Top Right Of The Quad (Left)
+  glVertex3f(-0.1f, 0.1f,-0.1f);      // Top Left Of The Quad (Left)
+  glVertex3f(-0.1f,-0.1f,-0.1f);      // Bottom Left Of The Quad (Left)
+  glVertex3f(-0.1f,-0.1f, 0.1f);      // Bottom Right Of The Quad (Left)
   glEnd();
       
   glBegin(GL_LINE_LOOP);
-  glVertex3f( 0.125f, 0.125f,-0.125f);      // Top Right Of The Quad (Right)
-  glVertex3f( 0.125f, 0.125f, 0.125f);      // Top Left Of The Quad (Right)
-  glVertex3f( 0.125f,-0.125f, 0.125f);      // Bottom Left Of The Quad (Right)
-  glVertex3f( 0.125f,-0.125f,-0.125f);      // Bottom
+  glVertex3f( 0.1f, 0.1f,-0.1f);      // Top Right Of The Quad (Right)
+  glVertex3f( 0.1f, 0.1f, 0.1f);      // Top Left Of The Quad (Right)
+  glVertex3f( 0.1f,-0.1f, 0.1f);      // Bottom Left Of The Quad (Right)
+  glVertex3f( 0.1f,-0.1f,-0.1f);      // Bottom
   glEnd();
     
   glLineWidth(1.0);
@@ -822,7 +822,7 @@ void QMinefield::mouseMoveEvent(QMouseEvent *event) {
   Handle zooming
  */
 void QMinefield::wheelEvent(QWheelEvent *event) {
-  translate += event->delta()*(0.125*0.5*0.5);
+  translate += event->delta()*(-0.125*0.5*0.5);
   
   if (translate<11.0) translate = 11.0;
   updateGL();
@@ -832,7 +832,7 @@ void QMinefield::wheelEvent(QWheelEvent *event) {
   Reset the view to the original setting.
 */
 void QMinefield::resetView() {
-  translate=15;
+  translate=25;
   rotationX = 27.2457;
   rotationY = -46.44;
   rotationZ = 0.0;
