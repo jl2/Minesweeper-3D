@@ -1,0 +1,24 @@
+This is MineSweeper 3D, by Jeremiah LaRocco.
+
+The concept of the game is the same as "regular" Minesweeper: click on boxes
+ and avoid mines.
+
+Building from source requires QT 4.0 or above
+Playing the game requires the QT libraries and OpenGL.
+
+
+To get the code:
+
+   svn co http://jlarocco.com/mine3d/trunk/ mine3d
+
+To build:
+
+   qmake
+   make
+
+To play the game:
+
+   ./mine3d
+
+To submit a code change:
+   Send a patch to mine3d@jlarocco.com

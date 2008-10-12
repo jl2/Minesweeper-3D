@@ -43,11 +43,11 @@ MainWindow::MainWindow() : QMainWindow(), lost(false) {
   // Set difficulty parameters
   difficultySizes[DIF_EASY]=5;
   difficultySizes[DIF_MEDM]=11;
-  difficultySizes[DIF_HARD]=21;
+  difficultySizes[DIF_HARD]=15;
   
   difficultyBombs[DIF_EASY]=8;
   difficultyBombs[DIF_MEDM]=64;
-  difficultyBombs[DIF_HARD]=512;
+  difficultyBombs[DIF_HARD]=100;
 
   // Start a new game
   qmf->startNewGame(difficultySizes[difficulty],
