@@ -62,6 +62,8 @@ class QMinefield : public QGLWidget {
   void gameWon();
   // bombMarked() is emitted when a bomb is marked
   void bombMarked(size_t num_bombs);
+
+  void firstClick();
   
  protected:
   void initializeGL();
@@ -138,4 +140,6 @@ class QMinefield : public QGLWidget {
 
   // Set to true when the game is lost
   bool lost;
+
+  bool clicked;
 };

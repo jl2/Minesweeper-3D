@@ -23,6 +23,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QDateTime>
+#include <ctime>
 
 class QAction;
 class QMinefield;
@@ -32,6 +34,7 @@ class QIcon;
 class QMenu;
 class QToolBar;
 class QCloseEvent;
+class QSettings;
 
 // Some constants...
 static const size_t NUM_DIFFICULTIES = 3;
@@ -57,7 +60,11 @@ class MainWindow : public QMainWindow {
   void startEasyGame();
   void startMediumGame();
   void startHardGame();
+  void showHighScores();
   void updateStatusBar(size_t num_bombs);
+
+  void readHighScores();
+  void startTimer();
   
  protected:
   // Initialization functions
@@ -77,6 +84,8 @@ class MainWindow : public QMainWindow {
   QAction *easyAction;
   QAction *medAction;
   QAction *hardAction;
+
+  QAction *highScoresAction;
   
   QToolBar *theToolbar;
   
@@ -85,6 +94,8 @@ class MainWindow : public QMainWindow {
   QMenu *helpMenu;
   QLabel *statusLabel;
   QIcon *tbIcon;
+
+  QSettings *qset;
 
   QMinefield *qmf;
 
@@ -97,8 +108,16 @@ class MainWindow : public QMainWindow {
   int difficultySizes[NUM_DIFFICULTIES];
   int difficultyBombs[NUM_DIFFICULTIES];
 
+  std::time_t start_time;
+
+  // This could be implemented a little better
+  int best_times[NUM_DIFFICULTIES];
+  QString best_names[NUM_DIFFICULTIES];
+  QDateTime best_dates[NUM_DIFFICULTIES];
+  
   // True = game lost
   bool lost;
+  
 };
 
 #endif

@@ -20,8 +20,10 @@
 */
 
 #include <QtGui>
+#include <QSettings>
 
 #include <sstream>
+#include <cstdlib>
 
 #include "mainwindow.h"
 
@@ -41,14 +43,19 @@ MainWindow::MainWindow() : QMainWindow(), lost(false) {
   difficulty=0;
 
   // Set difficulty parameters
-  difficultySizes[DIF_EASY]=5;
+  difficultySizes[DIF_EASY]=6;
   difficultySizes[DIF_MEDM]=11;
-  difficultySizes[DIF_HARD]=15;
+  difficultySizes[DIF_HARD]=19;
   
-  difficultyBombs[DIF_EASY]=8;
-  difficultyBombs[DIF_MEDM]=64;
-  difficultyBombs[DIF_HARD]=100;
+  difficultyBombs[DIF_EASY]=15;
+  difficultyBombs[DIF_MEDM]=80;
+  difficultyBombs[DIF_HARD]=400;
 
+  qset = new QSettings(QSettings::IniFormat, QSettings::UserScope,
+		       "Mine3D", "Mine3D");
+
+  readHighScores();
+  
   // Start a new game
   qmf->startNewGame(difficultySizes[difficulty],
 		    difficultySizes[difficulty],
@@ -70,6 +77,7 @@ MainWindow::MainWindow() : QMainWindow(), lost(false) {
   connect(qmf, SIGNAL(gameLost()), this, SLOT(loseGame()));
   connect(qmf, SIGNAL(gameWon()), this, SLOT(winGame()));
   connect(qmf, SIGNAL(bombMarked(size_t)), this, SLOT(updateStatusBar(size_t)));
+  connect(qmf, SIGNAL(firstClick()), this, SLOT(startTimer()));
 }
 
 MainWindow::~MainWindow() {
@@ -152,6 +160,11 @@ void MainWindow::createActions() {
   hardAction->setCheckable(true);
   hardAction->setStatusTip(tr("Start a hard game"));
   connect(hardAction, SIGNAL(triggered()), this, SLOT(startHardGame()));
+
+  // Show High Scores dialog box
+  highScoresAction = new QAction(tr("High Scores"), this);
+  highScoresAction->setStatusTip(tr("Show high scores"));
+  connect(highScoresAction, SIGNAL(triggered()), this, SLOT(showHighScores()));
 }
 
 /*!
@@ -161,6 +174,8 @@ void MainWindow::createMenus() {
   // Game menu
   gameMenu = menuBar()->addMenu(tr("&File"));
   gameMenu->addAction(newGameAction);
+  gameMenu->addSeparator();
+  gameMenu->addAction(highScoresAction);
   gameMenu->addSeparator();
   gameMenu->addAction(quitAction);
 
@@ -265,16 +280,42 @@ void MainWindow::resetView() {
 void MainWindow::winGame() {
   
   if (qmf) {
-    if (QMessageBox::information(this, tr("Minesweeper 3D"),
-				 tr("You've actually won!  Play again?"),
-				 QMessageBox::Yes | QMessageBox::Default,
-				 QMessageBox::No) == QMessageBox::Yes) {
-      qmf->startNewGame(difficultySizes[difficulty],
-			difficultySizes[difficulty],
-			difficultySizes[difficulty],
-			difficultyBombs[difficulty]);
+    std::time_t end_time = std::time(0);
+
+    double elapsed = difftime(end_time, start_time);
+
+    if (elapsed < best_times[difficulty]) {
+      QString difs[] = {tr("easy"), tr("medm"), tr("hard")};
+      
+      qset->setValue(difs[difficulty] + tr("_name"), getenv("USERNAME"));
+      qset->setValue(difs[difficulty] + tr("_time"), elapsed);
+      qset->setValue(difs[difficulty] + tr("_date"), QDateTime::currentDateTime());
+      qset->sync();
+      
+      if (QMessageBox::information(this, tr("Minesweeper 3D"),
+				   tr("You've set the high score for this level!  Play again?"),
+				   QMessageBox::Yes | QMessageBox::Default,
+				   QMessageBox::No) == QMessageBox::Yes) {
+	qmf->startNewGame(difficultySizes[difficulty],
+			  difficultySizes[difficulty],
+			  difficultySizes[difficulty],
+			  difficultyBombs[difficulty]);
+      } else {
+	exit(0);
+      }
+
     } else {
-      exit(0);
+      if (QMessageBox::information(this, tr("Minesweeper 3D"),
+				   tr("You've actually won!  Play again?"),
+				   QMessageBox::Yes | QMessageBox::Default,
+				   QMessageBox::No) == QMessageBox::Yes) {
+	qmf->startNewGame(difficultySizes[difficulty],
+			  difficultySizes[difficulty],
+			  difficultySizes[difficulty],
+			  difficultyBombs[difficulty]);
+      } else {
+	exit(0);
+      }
     }
   }
 }
@@ -333,4 +374,43 @@ void MainWindow::startHardGame() {
     qmf->startNewGame( difficultySizes[difficulty], difficultySizes[difficulty], difficultySizes[difficulty], difficultyBombs[difficulty]);
   }
   
+}
+
+void MainWindow::readHighScores() {
+  qset->sync();
+  best_times[DIF_EASY] = qset->value("easy_time", 1000).toInt();
+  best_times[DIF_MEDM] = qset->value("medm_time", 10000).toInt();
+  best_times[DIF_HARD] = qset->value("hard_time", 10000).toInt();
+
+  best_names[DIF_EASY] = qset->value("easy_name", tr("Anon")).toString();
+  best_names[DIF_MEDM] = qset->value("medm_name", tr("Anon")).toString();
+  best_names[DIF_HARD] = qset->value("hard_name", tr("Anon")).toString();
+  
+  best_dates[DIF_EASY] = qset->value("easy_date", QDateTime(QDate(2000, 1,1))).toDateTime();
+  best_dates[DIF_MEDM] = qset->value("medm_date", QDateTime(QDate(2000, 1,1))).toDateTime();
+  best_dates[DIF_HARD] = qset->value("hard_date", QDateTime(QDate(2000, 1,1))).toDateTime();
+}
+
+
+/*!
+  Displays the high scores dialog box.
+ */
+void MainWindow::showHighScores() {
+
+  readHighScores();
+  QMessageBox::information(this, tr("Minesweeper 3D"),
+			   QString(tr("Easy   : %1 : %2 : %3\n"
+				      "Medium : %4 : %5 : %6\n"
+				      "Hard   : %7 : %8 : %9\n"))
+			   .arg(best_times[DIF_EASY]).arg(best_names[DIF_EASY]).arg(best_dates[DIF_EASY].toString())
+			   .arg(best_times[DIF_MEDM]).arg(best_names[DIF_MEDM]).arg(best_dates[DIF_MEDM].toString())
+			   .arg(best_times[DIF_HARD]).arg(best_names[DIF_HARD]).arg(best_dates[DIF_HARD].toString()),
+			   QMessageBox::Ok | QMessageBox::Default);
+}
+
+/*!
+  Set the game start time.
+  */
+void MainWindow::startTimer() {
+  start_time = time(0);
 }

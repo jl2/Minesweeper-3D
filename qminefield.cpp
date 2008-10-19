@@ -54,6 +54,7 @@ QMinefield::~QMinefield() {
 void QMinefield::startNewGame(size_t w, size_t h, size_t d, size_t n) {
   if (mf)
     delete mf;
+  clicked = false;
   lost = false;
   mf = new Minefield(w,h,d,n);
   resetView();
@@ -749,6 +750,10 @@ void QMinefield::paintGL() {
 void QMinefield::mousePressEvent(QMouseEvent *event) {
   // If the minefield isn't initialized, there's nothing to do
   if (!mf) return;
+
+  if (!clicked) emit firstClick();
+
+  clicked = true;
 
   // Try to get the name at this position
   int temp = nameAtPos(event->pos());

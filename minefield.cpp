@@ -122,25 +122,49 @@ size_t Minefield::touch(const size_t x, const size_t y, const size_t z) {
   // Now try the neighbors
   size_t bn = bombsNear(x,y,z);
 
-  if (bn==0) {
-    if (dpth>(x+1))
-      retVal += touch(x+1, y, z);
-    
-    if ((x-1)<dpth)
-      retVal += touch(x-1,y,z);
-    
-    if (hght>(y+1))
-      retVal += touch(x,y+1,z);
-    
-    if ((y-1)<hght)
-      retVal += touch(x,y-1,z);
-    
-    if (dpth>(z+1))
-      retVal += touch(x,y,z+1);
-    
-    if ((z-1)<dpth)
-      retVal += touch(x,y,z-1);
+  if (bn ==0) {
+    for (int xinc = -1; xinc <= 1; xinc += 1) {
+      for (int yinc = -1; yinc <= 1; yinc += 1) {
+	for (int zinc = -1; zinc <= 1; zinc += 1) {
+	  size_t nx = x + xinc;
+	  size_t ny = y + yinc;
+	  size_t nz = z + zinc;
+
+	  if ((nx < wdth) &&
+	      (ny < hght) &&
+	      (nz < dpth)) {
+	    retVal += touch(nx, ny, nz);
+	  }
+	}
+      }
+    }
   }
+    
+//   if (bn==0) {
+//     if (wdth>(x+1)) {
+//       retVal += touch(x+1, y, z);
+//       if (hght>(y+1)) {
+// 	retVal += touch(x+1, y+1, z);
+// 	if (
+//       }
+//     }
+
+
+    
+//     if ((x-1)<wdth)
+//       retVal += touch(x-1,y,z);
+    
+//     if (hght>(y+1))
+//       retVal += touch(x,y+1,z);
+    
+//     if ((y-1)<hght)
+//       retVal += touch(x,y-1,z);
+    
+//     if (dpth>(z+1))
+//       retVal += touch(x,y,z+1);
+    
+//     if ((z-1)<dpth)
+//       retVal += touch(x,y,z-1);
 
   return retVal;
 }
