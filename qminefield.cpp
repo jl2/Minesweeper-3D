@@ -167,7 +167,7 @@ void QMinefield::initLights() {
     
   glEnable(GL_LIGHT0);
     
-  glEnable(GL_LIGHT1);
+//   glEnable(GL_LIGHT1);
 }
 
 /*!
@@ -260,19 +260,19 @@ void QMinefield::initializeGL() {
   // Enable stuff
   qglClearColor(Qt::white);
   
-  glShadeModel(GL_SMOOTH);
+  glShadeModel(GL_FLAT);
     
-  glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+  glPolygonMode(GL_FRONT, GL_FILL);
     
   glEnable(GL_POLYGON_OFFSET_FILL);
     
   glEnable(GL_DEPTH_TEST);
     
-  glEnable(GL_LINE_SMOOTH);
+//   glEnable(GL_LINE_SMOOTH);
     
-  glEnable(GL_BLEND);
+//   glEnable(GL_BLEND);
     
-  glBlendFunc(GL_ONE, GL_ZERO);
+//   glBlendFunc(GL_ONE, GL_ZERO);
   
   // Load materials/lights/textures
   initMaterials();
@@ -341,8 +341,8 @@ void QMinefield::drawBoxList(size_t mat_idx) {
   glBegin(GL_QUADS);
   
   glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse[mat_idx]);
-  glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_specular[mat_idx]);
-  glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, mat_shininess[mat_idx]);
+//   glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_specular[mat_idx]);
+//   glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, mat_shininess[mat_idx]);
   glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient[mat_idx]);
 
   glVertex3f( 0.5f, 0.5f,-0.5f);      // Top Right Of The Quad (Top)
@@ -383,8 +383,8 @@ void QMinefield::drawBoxList(size_t mat_idx) {
   glBegin(GL_LINE_LOOP);
 
   glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse[LINE_MAT]);
-  glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_specular[LINE_MAT]);
-  glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, mat_shininess[LINE_MAT]);
+//   glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_specular[LINE_MAT]);
+//   glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, mat_shininess[LINE_MAT]);
   glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient[LINE_MAT]);
     
   glVertex3f( 0.5f, 0.5f,-0.5f);      // Top Right Of The Quad (Top)
@@ -452,8 +452,8 @@ void QMinefield::drawNumberBoxList(size_t tn) {
   glBegin(GL_QUADS);
   
   glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse[NUMBER_BOX_MAT]);
-  glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_specular[NUMBER_BOX_MAT]);
-  glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, mat_shininess[NUMBER_BOX_MAT]);
+//   glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_specular[NUMBER_BOX_MAT]);
+//   glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, mat_shininess[NUMBER_BOX_MAT]);
   glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient[NUMBER_BOX_MAT]);
 
   glTexCoord2f(0.0,0.0); glVertex3f( 0.125f, 0.125f,-0.125f);      // Top Right Of The Quad (Top)
@@ -499,8 +499,8 @@ void QMinefield::drawNumberBoxList(size_t tn) {
   // Draw the outline
   glBegin(GL_LINE_LOOP);
   glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse[LINE_MAT]);
-  glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_specular[LINE_MAT]);
-  glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, mat_shininess[LINE_MAT]);
+//   glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_specular[LINE_MAT]);
+//   glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, mat_shininess[LINE_MAT]);
   glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient[LINE_MAT]);
     
   glVertex3f( 0.1f, 0.1f,-0.1f);      // Top Right Of The Quad (Top)
@@ -662,8 +662,9 @@ void QMinefield::drawCell(size_t x, size_t y, size_t z) {
     // If the cell is near a bomb, display a numbered cube
     // Otherwise draw nothing
     temp = mf->bombsNear(x,y,z);
-    glLoadName(encodeBox(x,y,z));
+
     if (temp>0 && !lost) {
+      glLoadName(encodeBox(x,y,z));
       glCallList(dispLists[temp]);
     }
     break;
@@ -724,9 +725,9 @@ void QMinefield::paintGL() {
   glLightfv(GL_LIGHT0, GL_DIFFUSE, light_color[0]);
   glLightfv(GL_LIGHT0, GL_SPECULAR, light_color[0]);
   
-  glLightfv(GL_LIGHT1, GL_POSITION, light_position[1]);
-  glLightfv(GL_LIGHT1, GL_DIFFUSE, light_color[1]);
-  glLightfv(GL_LIGHT1, GL_SPECULAR, light_color[1]);
+//   glLightfv(GL_LIGHT1, GL_POSITION, light_position[1]);
+//   glLightfv(GL_LIGHT1, GL_DIFFUSE, light_color[1]);
+//   glLightfv(GL_LIGHT1, GL_SPECULAR, light_color[1]);
   
   glLightModelfv(GL_LIGHT_MODEL_AMBIENT, lmodel_ambient[0]);
   glLoadIdentity();

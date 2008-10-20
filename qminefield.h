@@ -30,7 +30,7 @@
 
 // Some constants...
 static const size_t NUM_MATERIALS=4;
-static const size_t NUM_LIGHTS=2;
+static const size_t NUM_LIGHTS=1;
 static const size_t NUM_TEXTURES=27;
 static const size_t LINE_MAT=0;
 static const size_t FILLED_BOX_MAT=1;
