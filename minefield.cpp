@@ -29,7 +29,7 @@
   It also initializes all private variables.
 */
 Minefield::Minefield(const size_t w, const size_t h, const size_t d,
-		     const size_t n): wdth(w), hght(h), dpth(d),
+		     const int n): wdth(w), hght(h), dpth(d),
 				      num_bombs(n), num_cleared(0),
 				      total_cells(w*h*d), num_marked(0), fake_marks(0), real_marks(0) {
   field = new mf_state_t[w*h*d];
@@ -44,7 +44,7 @@ Minefield::Minefield(const size_t w, const size_t h, const size_t d,
   }
 
   // Now populate it
-  for (size_t bn = 0; bn<n;++bn) {
+  for (int bn = 0; bn<n;++bn) {
     size_t tx;
     size_t ty;
     size_t tz;
@@ -78,7 +78,7 @@ mf_state_t Minefield::getState(const size_t x, const size_t y, const size_t z) {
 /*!
   Returns the number of mines remaining.
 */
-size_t Minefield::minesRemaining() {
+int Minefield::minesRemaining() {
   return (num_bombs-(fake_marks+real_marks));
 }
 

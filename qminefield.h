@@ -61,7 +61,7 @@ class QMinefield : public QGLWidget {
   // gameWon() is emitted when the game is won
   void gameWon();
   // bombMarked() is emitted when a bomb is marked
-  void bombMarked(size_t num_bombs);
+  void bombMarked(int num_bombs);
 
   void firstClick();
   

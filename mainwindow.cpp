@@ -84,7 +84,7 @@ MainWindow::MainWindow() : QMainWindow(), lost(false) {
   // Connect some signals
   connect(qmf, SIGNAL(gameLost()), this, SLOT(loseGame()));
   connect(qmf, SIGNAL(gameWon()), this, SLOT(winGame()));
-  connect(qmf, SIGNAL(bombMarked(size_t)), this, SLOT(updateStatusBar(size_t)));
+  connect(qmf, SIGNAL(bombMarked(int)), this, SLOT(updateStatusBar(int)));
   connect(qmf, SIGNAL(firstClick()), this, SLOT(startTimer()));
   
   connect(theTimer, SIGNAL(timeout()), this, SLOT(update()));
@@ -237,7 +237,7 @@ void MainWindow::createStatusBar() {
 /*!
   Updates the status bar to display number of bombs left.
  */
-void MainWindow::updateStatusBar(size_t num_bombs) {
+void MainWindow::updateStatusBar(int num_bombs) {
   std::ostringstream fname;
   fname << num_bombs << " Bombs Left";
   statusLabel->setText(QString(fname.str().c_str()));

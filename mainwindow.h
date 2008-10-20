@@ -62,7 +62,7 @@ class MainWindow : public QMainWindow {
   void startMediumGame();
   void startHardGame();
   void showHighScores();
-  void updateStatusBar(size_t num_bombs);
+  void updateStatusBar(int num_bombs);
 
   void readHighScores();
   void startTimer();

@@ -31,7 +31,7 @@ enum mf_state_t {open, closed, closed_bomb, marked_empty, marked_bomb};
 class Minefield {
  public:
   
-  Minefield(const size_t w=10, const size_t h=10, const size_t d=10, const size_t n=50);
+  Minefield(const size_t w=10, const size_t h=10, const size_t d=10, const int n=50);
 
   ~Minefield();
 
@@ -56,7 +56,7 @@ class Minefield {
   size_t bombsNear(const size_t x, const size_t y, const size_t z);
 
   // Returns the number of unmarked bombs
-  size_t minesRemaining();
+  int minesRemaining();
   
  protected:
   // Used internally to get/set states
@@ -70,7 +70,7 @@ class Minefield {
   size_t wdth;
   size_t hght;
   size_t dpth;
-  size_t num_bombs;
+  int num_bombs;
 
   // These are used to keep track of game status to determine winning/losing
   size_t num_cleared;
