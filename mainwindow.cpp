@@ -317,6 +317,7 @@ void MainWindow::winGame() {
 			  difficultySizes[difficulty],
 			  difficultySizes[difficulty],
 			  difficultyBombs[difficulty]);
+	start_time = 0;
       } else {
 	exit(0);
       }
@@ -330,6 +331,7 @@ void MainWindow::winGame() {
 			  difficultySizes[difficulty],
 			  difficultySizes[difficulty],
 			  difficultyBombs[difficulty]);
+	start_time = 0;
       } else {
 	exit(0);
       }
