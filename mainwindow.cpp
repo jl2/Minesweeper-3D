@@ -34,21 +34,25 @@
 */
 MainWindow::MainWindow() : QMainWindow(), lost(false) {
   
+  std::srand(std::time(0));
+
   // Create QMinefield widget
   qmf = new QMinefield(this);
   
   promptExit = true;
-
+  lost = true;
   // Default to easy difficulty
   difficulty=0;
-
+  
+  
+  
   // Set difficulty parameters
   difficultySizes[DIF_EASY]=6;
   difficultySizes[DIF_MEDM]=11;
   difficultySizes[DIF_HARD]=19;
   
-  difficultyBombs[DIF_EASY]=15;
-  difficultyBombs[DIF_MEDM]=80;
+  difficultyBombs[DIF_EASY]=10;
+  difficultyBombs[DIF_MEDM]=60;
   difficultyBombs[DIF_HARD]=400;
 
   qset = new QSettings(QSettings::IniFormat, QSettings::UserScope,
@@ -72,12 +76,19 @@ MainWindow::MainWindow() : QMainWindow(), lost(false) {
   createMenus();
   createToolbar();
   createStatusBar();
+    
+  start_time = 0;
+  
+  theTimer = new QTimer(this);
 
   // Connect some signals
   connect(qmf, SIGNAL(gameLost()), this, SLOT(loseGame()));
   connect(qmf, SIGNAL(gameWon()), this, SLOT(winGame()));
   connect(qmf, SIGNAL(bombMarked(size_t)), this, SLOT(updateStatusBar(size_t)));
   connect(qmf, SIGNAL(firstClick()), this, SLOT(startTimer()));
+  
+  connect(theTimer, SIGNAL(timeout()), this, SLOT(update()));
+
 }
 
 MainWindow::~MainWindow() {
@@ -165,6 +176,9 @@ void MainWindow::createActions() {
   highScoresAction = new QAction(tr("High Scores"), this);
   highScoresAction->setStatusTip(tr("Show high scores"));
   connect(highScoresAction, SIGNAL(triggered()), this, SLOT(showHighScores()));
+
+  timeAction = new QAction(tr("0"), this);
+  timeAction->setStatusTip(tr("Time"));
 }
 
 /*!
@@ -200,6 +214,7 @@ void MainWindow::createToolbar() {
   theToolbar->addAction(newGameAction);
   theToolbar->addSeparator();
   theToolbar->addAction(resetViewAction);
+  theToolbar->addAction(timeAction);
 }
 
 /*!
@@ -233,12 +248,13 @@ void MainWindow::updateStatusBar(size_t num_bombs) {
  */
 void MainWindow::newGame() {
   // Prompt first
-  if (lost || QMessageBox::warning(this, tr("Minesweeper 3D"),
+  if (!start_time || lost || QMessageBox::warning(this, tr("Minesweeper 3D"),
 				   tr("Really start a new game?"),
 				   QMessageBox::Yes | QMessageBox::Default,
 				   QMessageBox::No, QMessageBox::Cancel | QMessageBox::Escape)==QMessageBox::Yes) {
     lost = false;
     qmf->startNewGame( difficultySizes[difficulty], difficultySizes[difficulty], difficultySizes[difficulty], difficultyBombs[difficulty]);
+    start_time = 0;
   }
 }
 
@@ -280,6 +296,7 @@ void MainWindow::resetView() {
 void MainWindow::winGame() {
   
   if (qmf) {
+    theTimer->stop();
     std::time_t end_time = std::time(0);
 
     double elapsed = difftime(end_time, start_time);
@@ -325,13 +342,15 @@ void MainWindow::winGame() {
  */
 void MainWindow::loseGame() {
   lost = true;
+  theTimer->stop();
 }
 
 /*!
   Starts a game on the easy difficulty level
  */
 void MainWindow::startEasyGame() {
-  if (lost || QMessageBox::warning(this, tr("Minesweeper 3D"),
+  
+  if (!start_time || lost || QMessageBox::warning(this, tr("Minesweeper 3D"),
 				   tr("Really start a new game?"),
 				   QMessageBox::Yes | QMessageBox::Default,
 				   QMessageBox::No, QMessageBox::Cancel | QMessageBox::Escape)==QMessageBox::Yes) {
@@ -340,6 +359,8 @@ void MainWindow::startEasyGame() {
     hardAction->setChecked(false);
     lost = false;
     qmf->startNewGame( difficultySizes[difficulty], difficultySizes[difficulty], difficultySizes[difficulty], difficultyBombs[difficulty]);
+    start_time = 0;
+    updateStatusBar(difficultyBombs[difficulty]);
   }
 }
 
@@ -347,7 +368,7 @@ void MainWindow::startEasyGame() {
   Starts a game on the medium difficulty level
 */
 void MainWindow::startMediumGame() {
-  if (lost || QMessageBox::warning(this, tr("Minesweeper 3D"),
+  if (!start_time || lost || QMessageBox::warning(this, tr("Minesweeper 3D"),
 				   tr("Really start a new game?"),
 				   QMessageBox::Yes | QMessageBox::Default,
 				   QMessageBox::No, QMessageBox::Cancel | QMessageBox::Escape)==QMessageBox::Yes) {
@@ -356,6 +377,8 @@ void MainWindow::startMediumGame() {
     difficulty = DIF_MEDM;
     lost = false;
     qmf->startNewGame( difficultySizes[difficulty], difficultySizes[difficulty], difficultySizes[difficulty], difficultyBombs[difficulty]);
+    start_time = 0;
+    updateStatusBar(difficultyBombs[difficulty]);
   }
 }
 
@@ -363,7 +386,7 @@ void MainWindow::startMediumGame() {
   Starts a game on the hard difficulty level
  */
 void MainWindow::startHardGame() {
-  if (lost || QMessageBox::warning(this, tr("Minesweeper 3D"),
+  if (!start_time || lost || QMessageBox::warning(this, tr("Minesweeper 3D"),
 				   tr("Really start a new game?"),
 				   QMessageBox::Yes | QMessageBox::Default,
 				   QMessageBox::No, QMessageBox::Cancel | QMessageBox::Escape)==QMessageBox::Yes) {
@@ -372,8 +395,9 @@ void MainWindow::startHardGame() {
     difficulty = DIF_HARD;
     lost = false;
     qmf->startNewGame( difficultySizes[difficulty], difficultySizes[difficulty], difficultySizes[difficulty], difficultyBombs[difficulty]);
+    start_time = 0;
+    updateStatusBar(difficultyBombs[difficulty]);
   }
-  
 }
 
 void MainWindow::readHighScores() {
@@ -412,5 +436,20 @@ void MainWindow::showHighScores() {
   Set the game start time.
   */
 void MainWindow::startTimer() {
-  start_time = time(0);
+  start_time = std::time(0);
+  theTimer->start(1000);
+}
+
+/*!
+  Update the timer
+  */
+void MainWindow::update() {
+  if (start_time) {
+    std::time_t end_time = std::time(0);
+    double elapsed = difftime(end_time, start_time);
+    
+    timeAction->setText(tr("%1").arg(elapsed));
+  } else {
+    timeAction->setText(tr("0"));
+  }
 }

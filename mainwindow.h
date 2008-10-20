@@ -35,6 +35,7 @@ class QMenu;
 class QToolBar;
 class QCloseEvent;
 class QSettings;
+class QTimer;
 
 // Some constants...
 static const size_t NUM_DIFFICULTIES = 3;
@@ -65,6 +66,8 @@ class MainWindow : public QMainWindow {
 
   void readHighScores();
   void startTimer();
+
+  void update();
   
  protected:
   // Initialization functions
@@ -86,6 +89,9 @@ class MainWindow : public QMainWindow {
   QAction *hardAction;
 
   QAction *highScoresAction;
+
+
+  QAction *timeAction;
   
   QToolBar *theToolbar;
   
@@ -117,6 +123,8 @@ class MainWindow : public QMainWindow {
   
   // True = game lost
   bool lost;
+
+  QTimer *theTimer;
   
 };
 
