@@ -308,6 +308,7 @@ void MainWindow::winGame() {
       qset->setValue(difs[difficulty] + tr("_time"), elapsed);
       qset->setValue(difs[difficulty] + tr("_date"), QDateTime::currentDateTime());
       qset->sync();
+      readHighScores();
       
       if (QMessageBox::information(this, tr("Minesweeper 3D"),
 				   tr("You've set the high score for this level!  Play again?"),

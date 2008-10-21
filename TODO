@@ -1,17 +1,10 @@
-Although Minesweeper 3D is a fairly complete game, there are still several things that need to be changed.
-The following is a list of changes that should be made at some point:
+The following things can be done better:
 
-Clean up the drawing code.
-   Right now the drawing code is slightly more complicated than it needs to be because marked cells, closed cells, and the small numbered boxes are all handled differently.
-   In the future the marked cells and closed cells should be given texture maps, so they can be drawn similarly to the small numbered boxes.
-   Not only would that simplify the code, it would also allow greater flexibility in the way those boxes are displayed.
-   Also, the lightning is a little bit strange for large games.
+Documentation
+   Right now most functions have a very brief Doxygen comment, but better information could be given for most of them.
 
-Add a high score list
-   Right now there is now high score list, and hardly any recognition when the game is won.
+OpenGL Code
+   The graphics code in qminefield.cpp could be cleaned up a bit.  Could also probably be made a bit faster.
 
-Fix Win determination code
-   Right now the code that determines a "win" is not fully functional, and should be fixed.
-
-Better Documentation
-   Right now most functions have a very brief Doxygen comment, but better information should be given for most of them.
+Custom Size
+   Most 2D variants of the game allow setting a custom size.  The underlying software supports this already, there's just no interface to it.
