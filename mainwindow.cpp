@@ -49,11 +49,11 @@ MainWindow::MainWindow() : QMainWindow(), lost(false) {
   // Set difficulty parameters
   difficultySizes[DIF_EASY]=6;
   difficultySizes[DIF_MEDM]=11;
-  difficultySizes[DIF_HARD]=19;
+  difficultySizes[DIF_HARD]=15;
   
   difficultyBombs[DIF_EASY]=10;
   difficultyBombs[DIF_MEDM]=60;
-  difficultyBombs[DIF_HARD]=400;
+  difficultyBombs[DIF_HARD]=160;
 
   qset = new QSettings(QSettings::IniFormat, QSettings::UserScope,
 		       "Mine3D", "Mine3D");
